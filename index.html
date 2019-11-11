@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>发红包才能看到的图</title>
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      .blurDiv {
+        position: relative;
+        width: 877px;
+        height: 500px;
+        margin: 20px auto 0;
+      }
+      .blurImg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 877px;
+        height: 400px;
+        filter: blur(20px);
+        -webkit-filter: blur(20px);
+      }
+      #canvas {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: 0 auto;
+        z-index: 99;
+      }
+      .blurDiv a:nth-of-type(1) {
+        position: absolute;
+        left: 20%;
+        bottom: 5%;
+        background: #a27230;
+        z-index: 1314;
+      }
+      .blurDiv a:nth-of-type(1):hover {
+        background: #755323;
+      }
+      .blurDiv a:nth-of-type(2) {
+        position: absolute;
+        right: 20%;
+        bottom: 5%;
+        background: #661b11;
+        z-index: 1314;
+      }
+      .blurDiv a:nth-of-type(2):hover {
+        background: #662b2a;
+      }
+      a {
+        text-decoration: none;
+        color: #ffffff;
+        width: 120px;
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="blurDiv">
+      <img src="images/pic.jpg" class="blurImg" id="blurImg" alt="pic" />
+      <canvas id="canvas" width="877" height="400">
+        您浏览器不支持canvas，请升级浏览器
+      </canvas>
+      <a href="javascript:buttonRest()" class="button" id="buttonRest"
+        >想看我么</a
+      >
+      <a href="javascript:buttonShow()" class="button" id="buttonShow"
+        >收到红包</a
+      >
+    </div>
+    <script>
+      let canvas = document.querySelector("#canvas");
+      let ctx = canvas.getContext("2d");
+      let radius = 50;
+      let image = new Image();
+      image.src = "images/pic.jpg";
+      image.onload = function() {
+        initCanvas();
+      };
+      function initCanvas() {
+        Region = {
+          x: Math.random() * (canvas.width - 2 * radius) + radius,
+          y: Math.random() * (canvas.height - 2 * radius) + radius,
+          r: radius
+        };
+        draw(Region);
+      }
+      function draw() {
+        // 用于清除上一次绘制的图形
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        setRegion(Region);
+        ctx.drawImage(image, 0, 0);
+        ctx.restore();
+      }
+      // 绘制圆型 ，clip()裁剪图像
+      function setRegion(Region) {
+        ctx.beginPath();
+        ctx.arc(Region.x, Region.y, Region.r, 0, Math.PI * 2, false);
+        ctx.clip();
+      }
+      function buttonRest() {
+        initCanvas();
+      }
+      function buttonShow() {
+        Region.r = 2 * Math.max(canvas.width,canvas.height);
+        draw(image, Region);
+      }
+    //   console.log(canvas.height);
+    </script>
+  </body>
+</html>
